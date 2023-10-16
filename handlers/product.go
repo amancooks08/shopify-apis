@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"shopify-apis/configs"
 	"shopify-apis/constants"
@@ -44,7 +45,6 @@ func GetProductsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-
 	// Check the response status code
 	if resp.StatusCode != http.StatusOK {
 		http.Error(w, fmt.Sprintf("Request failed with status: %s", resp.Status), resp.StatusCode)
@@ -62,4 +62,47 @@ func GetProductsHandler(w http.ResponseWriter, r *http.Request) {
 	// Return the JSON response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(shopifyResonse)
+}
+
+func GetVariantFromID(variantID string) domain.Variant {
+
+	// Create an URL for the Shopify store products endpoint
+	variantURL := constants.STORE_BASE_URL + constants.VARIANT_ENDPOINT + variantID + ".json"
+
+	// Get the Variant from the Shopify store
+	req, err := http.NewRequest("GET", variantURL, nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return domain.Variant{}
+	}
+
+	// Set the admin token in the request headers
+	req.Header.Set("X-Shopify-Access-Token", configs.AdminToken())
+
+	// Send the request to Shopify
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Println("Error sending request:", err)
+		return domain.Variant{}
+	}
+	defer resp.Body.Close()
+
+	// Check the response status code
+	if resp.StatusCode != http.StatusOK {
+		log.Println("Variant was not fetched with status:", resp.Status)
+		return domain.Variant{}
+	}
+
+	fmt.Println(resp.StatusCode)
+
+	var response domain.GetVariantResponse
+	// Parse the JSON response
+	decoder := json.NewDecoder(resp.Body)
+	if err := decoder.Decode(&response); err != nil {
+		log.Println("Error decoding JSON:", err)
+		return domain.Variant{}
+	}
+
+	return response.Variant
 }

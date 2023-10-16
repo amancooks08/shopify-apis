@@ -130,8 +130,18 @@ func ViewCart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var viewCartResponse []domain.ViewCartItem
+	for _, cartItem := range cart[mobileNumber] {
+		variant := GetVariantFromID(cartItem.VariantID)
+		cartResponse := domain.ViewCartItem{
+			VariantID:  cartItem.VariantID,
+			VariantTitle: variant.Title,
+		}
+		viewCartResponse = append(viewCartResponse, cartResponse)
+	}
+
 	// Respond with the cart items
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(cart[mobileNumber])
+	json.NewEncoder(w).Encode(viewCartResponse)
 }

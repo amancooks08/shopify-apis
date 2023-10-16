@@ -69,3 +69,12 @@ type CartItem struct {
 	VariantID string `json:"variant_id"`
 	Quantity  int    `json:"quantity"`
 }
+
+type ViewCartItem struct {
+	VariantID string `json:"variant_id"`
+	VariantTitle string `json:"variant_title"`
+}
+
+type GetVariantResponse struct {
+	Variant Variant `json:"variant"`
+}
