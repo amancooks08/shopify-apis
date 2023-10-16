@@ -15,5 +15,6 @@ func InitRouter() (router *mux.Router) {
 	router.HandleFunc("/cart/{mobile_number}", handlers.AddItemToCart).Methods(http.MethodPost)
 	router.HandleFunc("/cart/remove/{mobile_number}", handlers.RemoveItemFromCart).Methods(http.MethodPost)
 	router.HandleFunc("/cart/{mobile_number}", handlers.ViewCart).Methods(http.MethodGet)
+	router.HandleFunc("/order/create/{mobile_number}", handlers.CreateOrder).Methods(http.MethodPost)
 	return router
 }

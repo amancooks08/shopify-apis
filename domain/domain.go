@@ -67,15 +67,29 @@ type User struct {
 }
 
 type CartItem struct {
-	VariantID string `json:"variant_id"`
+	VariantID int64 `json:"variant_id"`
 	Quantity  int    `json:"quantity"`
 }
 
 type ViewCartItem struct {
-	VariantID    string `json:"variant_id"`
+	VariantID    int64 `json:"variant_id"`
 	VariantTitle string `json:"variant_title"`
 }
 
 type GetVariantResponse struct {
 	Variant Variant `json:"variant"`
+}
+
+type OrderRequest struct {
+	Order Order `json:"order"`
+}
+
+type OrderResponse struct {
+	OrderID string `json:"order_id"`
+}
+
+type Order struct {
+	ID		int64      `json:"id,omitempty"`
+	Email     string     `json:"email"`
+	LineItems []CartItem `json:"line_items"`
 }

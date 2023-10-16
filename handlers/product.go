@@ -64,10 +64,10 @@ func GetProductsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(shopifyResonse)
 }
 
-func GetVariantFromID(variantID string) domain.Variant {
+func GetVariantFromID(variantID int64) domain.Variant {
 
 	// Create an URL for the Shopify store products endpoint
-	variantURL := constants.STORE_BASE_URL + constants.VARIANT_ENDPOINT + variantID + ".json"
+	variantURL := constants.STORE_BASE_URL + constants.VARIANT_ENDPOINT + fmt.Sprintf("%d", variantID) + ".json"
 
 	// Get the Variant from the Shopify store
 	req, err := http.NewRequest("GET", variantURL, nil)
