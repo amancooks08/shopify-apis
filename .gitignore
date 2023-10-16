@@ -1,1 +1,2 @@
-.yml
+#Ignore the env file
+application.yml
