@@ -64,3 +64,8 @@ type User struct {
 	LastName  string `json:"last_name"`
 	MobileNumber   string `json:"phone"`
 }
+
+type CartItem struct {
+	VariantID string `json:"variant_id"`
+	Quantity  int    `json:"quantity"`
+}
