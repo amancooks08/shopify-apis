@@ -58,3 +58,9 @@ type Metafield struct {
 	Type              string `json:"type,omitempty"`           //One of Shopify's defined types, see metafieldType.
 	AdminGraphqlAPIID string        `json:"admin_graphql_api_id,omitempty"`
 }
+
+type User struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	MobileNumber   string `json:"phone"`
+}
