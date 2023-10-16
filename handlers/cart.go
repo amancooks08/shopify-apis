@@ -105,9 +105,33 @@ func RemoveItemFromCart(w http.ResponseWriter, r *http.Request) {
 		message = constants.VARIANT_REMOVED
 	}
 
-
 	// Respond with a success message
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"message": message})
+}
+
+func ViewCart(w http.ResponseWriter, r *http.Request) {
+	// Extract the mobile number from the URL path
+	mobileNumber := r.URL.Path[len("/cart/"):]
+
+	if r.Method != http.MethodGet {
+		// Return an error for unsupported methods
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+
+	// Lock the cart for concurrent access
+	cartMutex.Lock()
+	defer cartMutex.Unlock()
+
+	// Check if a cart exists for the mobile number
+	if _, ok := cart[mobileNumber]; !ok {
+		http.Error(w, "User does not exist", http.StatusNotFound)
+		return
+	}
+
+	// Respond with the cart items
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(cart[mobileNumber])
 }
