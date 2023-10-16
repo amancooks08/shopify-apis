@@ -19,6 +19,10 @@ func ValidateUser(user domain.User) (bool, error) {
 		return false, errors.New("invalid last name")
 	}
 
+	if !validateEmail(user.Email) {
+		return false, errors.New("invalid email")
+	}
+	
 	return true, nil
 
 }
@@ -31,4 +35,9 @@ func validateMobileNumber(contact string) bool {
 func vaildateName(name string) bool {
 	re := regexp.MustCompile(`^[A-Za-z-' ]+$`)
 	return re.MatchString(name)
+}
+
+func validateEmail(email string) bool {
+	re := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+	return re.MatchString(email)
 }
