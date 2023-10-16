@@ -4,6 +4,7 @@ go 1.21.3
 
 require (
 	github.com/gorilla/mux v1.8.0
+	github.com/shopspring/decimal v0.0.0-20200105231215-408a2507e114
 	github.com/spf13/viper v1.17.0
 	github.com/urfave/negroni v1.0.0
 )
