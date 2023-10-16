@@ -38,6 +38,7 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 				"first_name": user.FirstName,
 				"last_name":  user.LastName,
 				"phone":      user.MobileNumber,
+				"email":      user.Email,
 			},
 		}
 
@@ -96,4 +97,15 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
+}
+
+
+func CreateOrder(w http.ResponseWriter, r http.Request) {
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Parse the JSON request
+
 }
