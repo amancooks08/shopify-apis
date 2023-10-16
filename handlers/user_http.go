@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"shopify-apis/configs"
 	"shopify-apis/constants"
@@ -47,7 +46,6 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error marshaling JSON:", err)
 			return
 		}
-		log.Println(string(jsonData))
 
 		req, err := http.NewRequest("POST", createUserURL, bytes.NewBuffer(jsonData))
 		if err != nil {
