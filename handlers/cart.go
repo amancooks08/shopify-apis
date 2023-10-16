@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"shopify-apis/constants"
 	"shopify-apis/domain"
 	"sync"
 )
@@ -59,4 +60,54 @@ func AddItemToCart(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"message": "Variant added to the cart"})
+}
+
+func RemoveItemFromCart(w http.ResponseWriter, r *http.Request) {
+	var message string
+	// Extract the mobile number from the URL path
+	mobileNumber := r.URL.Path[len("/cart/remove/"):]
+
+	if r.Method != http.MethodPost {
+		// Return an error for unsupported methods
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+
+	var item domain.CartItem
+	err := json.NewDecoder(r.Body).Decode(&item)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Lock the cart for concurrent access
+	cartMutex.Lock()
+	defer cartMutex.Unlock()
+
+	// Check if a cart exists for the mobile number
+	if _, ok := cart[mobileNumber]; !ok {
+		http.Error(w, "User does not exist", http.StatusNotFound)
+		return
+	}
+
+	// Remove the item from the cart
+	userCart := cart[mobileNumber]
+	for i, cartItem := range userCart {
+		if cartItem.VariantID == item.VariantID {
+			cartItem.Quantity -= item.Quantity
+		}
+		if cartItem.Quantity == 0 {
+			userCart = append(userCart[:i], userCart[i+1:]...)
+		}
+	}
+	if len(userCart) == 0 {
+		message = constants.CART_IS_EMPTY
+	} else {
+		message = constants.VARIANT_REMOVED
+	}
+
+
+	// Respond with a success message
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"message": message})
 }
