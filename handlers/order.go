@@ -102,6 +102,9 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	// Return the JSON response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(createOrderResponse)
+
+	// Empty the cart
+	cart[mobileNumber] = []domain.CartItem{}
 }
 
 func ViewOrdersByUTM(w http.ResponseWriter, r *http.Request) {
