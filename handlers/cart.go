@@ -57,7 +57,6 @@ func AddItemToCart(w http.ResponseWriter, r *http.Request) {
 	cart[mobileNumber] = append(cart[mobileNumber], item)
 
 	// Respond with a success message
-	w.WriteHeader(http.StatusCreated)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"message": "Variant added to the cart"})
 }
