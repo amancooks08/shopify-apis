@@ -12,8 +12,8 @@ var (
 )
 
 func Load() {
-	viper.SetDefault("APP_PORT", "8002")
-
+	viper.SetDefault("APP_PORT", "8001")
+	
 	viper.SetConfigName("application")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./")
@@ -28,6 +28,10 @@ func AppPort() string {
 		appPort = ReadEnvString("APP_PORT")
 	}
 	return appPort
+}
+
+func AdminToken() string {
+	return ReadEnvString("ADMIN_TOKEN")
 }
 
 func ReadEnvString(key string) string {
