@@ -90,7 +90,7 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Add the user to the cart
-		AddNewUserToCart(user.MobileNumber)
+		AddNewUserToCart(user.MobileNumber[3:])
 
 		// Return the JSON response
 		w.Header().Set("Content-Type", "application/json")
