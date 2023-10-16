@@ -36,7 +36,6 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	// Convert lineItems into JSON string
 
 	userEmail := GetUser(mobileNumber)
-	fmt.Println(userEmail)
 
 	// Create an URL for the Shopify store Create User endpoint
 	createOrderURL := constants.STORE_BASE_URL + constants.CREATE_ORDER_ENDPOINT + constants.UTM_PARAMS
